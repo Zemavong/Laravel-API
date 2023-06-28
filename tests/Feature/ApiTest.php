@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Desk;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -32,9 +33,45 @@ class ApiTest extends TestCase
         $response = $this->post('/api/V1/desks/', [
             'name' => '',
         ], [
-            'Accept'=>'application/json'
+            'Accept' => 'application/json'
         ]);
 
-        $response->assertUnprocessable();
+        $response->assertStatus(422);
+    }
+
+    public function test_invalidEmptyUpdateDesk(): void
+    {
+        $deskId = Desk::query()->first();
+        $response = $this->post('/api/V1/desks/' . $deskId['id'], [
+            '_method' => 'PUT',
+        ], [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function test_UpdateDesk(): void
+    {
+        $deskId = Desk::query()->first();
+        $response = $this->post('/api/V1/desks/' . $deskId['id'], [
+            '_method' => 'PUT',
+            'name' => 'New'
+        ], [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_deleteDesk(): void
+    {
+        $deskId = Desk::query()->first();
+        $response = $this->post('/api/V1/desks/' . $deskId['id'],
+            [
+                '_method' => 'DELETE'
+            ]);
+
+        $response->assertStatus(204);
     }
 }
