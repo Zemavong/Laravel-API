@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Desk;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ApiTest extends TestCase
@@ -16,7 +17,7 @@ class ApiTest extends TestCase
     {
         $response = $this->get('/api/V1/desks');
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     public function test_createDesk(): void
@@ -25,7 +26,7 @@ class ApiTest extends TestCase
             'name' => 'testname',
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
     }
 
     public function test_invalidFieldDesk(): void
@@ -36,7 +37,7 @@ class ApiTest extends TestCase
             'Accept' => 'application/json'
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_invalidEmptyUpdateDesk(): void
@@ -48,7 +49,7 @@ class ApiTest extends TestCase
             'Accept' => 'application/json'
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_UpdateDesk(): void
@@ -61,7 +62,7 @@ class ApiTest extends TestCase
             'Accept' => 'application/json'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     public function test_deleteDesk(): void
@@ -72,6 +73,6 @@ class ApiTest extends TestCase
                 '_method' => 'DELETE'
             ]);
 
-        $response->assertStatus(204);
+        $response->assertStatus(Response::HTTP_NO_CONTENT); //пофиксить статус
     }
 }
