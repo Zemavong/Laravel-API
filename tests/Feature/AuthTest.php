@@ -25,10 +25,10 @@ class AuthTest extends TestCase
     {
         $newUser = Desk::query()->latest();
 
-        $response = $this->post('/api/V1/register',[
+        $response = $this->post('/api/V1/register', [
             "name" => $newUser['name'],
-            "email"=>"test@gmail.com",
-            "password"=>"123"
+            "email" => "test@gmail.com",
+            "password" => "123"
         ], [
             'Accept' => 'application/json'
         ]);
@@ -38,12 +38,19 @@ class AuthTest extends TestCase
 
     public function test_loginSuccess(): void
     {
-        $response = $this->post('/api/V1/login',[
-            "email"=>"test@gmail.com",
-            "password"=>"123"
+        $response = $this->post('/api/V1/login', [
+            "email" => "test@gmail.com",
+            "password" => "123"
         ], [
             'Accept' => 'application/json'
         ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    public function test_logoutSuccess(): void
+    {
+        $response = $this->post('/api/V1/logout');
 
         $response->assertStatus(Response::HTTP_OK);
     }
