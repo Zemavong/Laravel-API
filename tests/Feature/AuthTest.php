@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 
 use App\Models\Desk;
+use http\Cookie;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
